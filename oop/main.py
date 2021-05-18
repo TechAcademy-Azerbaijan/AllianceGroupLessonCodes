@@ -39,7 +39,6 @@ sebuhi_obj = Programmer()
 sebuhi_obj.work()
 
 
-
 #print(sebuhi_obj.age)
 #sebuhi_obj.age -= 1
 # print(sebuhi_obj.age)
