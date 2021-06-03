@@ -1,0 +1,6 @@
+docker build -t flask_app:1.0.0 .
+docker run -d flask_app:1.0.0
+docker exec -it f4ea19ccb754 bash
+
+docker run -d --name my_site flask_app:1.0.0
+docker run -d -p "8000:5000"  --name my_site flask_app:1.0.0
