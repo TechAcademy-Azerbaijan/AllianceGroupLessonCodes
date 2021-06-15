@@ -149,3 +149,24 @@ class StoryComment(models.Model):
     is_published = models.BooleanField('Ders olunsun?', default=False)
     created_at = models.DateTimeField(auto_now_add=True, )
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class BookCategory(models.Model):
+    title = models.CharField(max_length=255)
+
+
+class Author(models.Model):
+    full_name = models.CharField('ad soyad', max_length=255)
+    image = models.ImageField('foto', upload_to='media/authors')
+    nationality = models.CharField('milliyet', max_length=255)
+    info = models.TextField('Bio')
+
+
+class Book(models.Model):
+    title = models.CharField('Basliq', max_length=255)
+    description = models.TextField('Haqqinda')
+    author = models.ForeignKey(Author, related_name='books', on_delete=models.CASCADE)
+    price = models.DecimalField('qiymet', max_digits=4, decimal_places=2)
+    page_count = models.IntegerField('sehife sayi')
+    cover_image = models.ImageField('uz qabigi', upload_to='media/book_covers')
+    categories = models.ManyToManyField(BookCategory, blank=True, related_name='books')

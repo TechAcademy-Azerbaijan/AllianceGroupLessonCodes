@@ -5,7 +5,9 @@ from stories.models import (
     Tag,
     Recipe,
     RecipeComment,
-    StoryComment
+    StoryComment,
+    Book,
+    Author
 )
 
 
@@ -58,4 +60,7 @@ admin.site.site_header = format_html("`<img src={url} height=100 width=100`>", u
 
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register([Category, Story, Tag,
-                     StoryComment])
+                     StoryComment,
+                     Book,
+                     Author
+                     ])
