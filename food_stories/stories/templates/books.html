@@ -5,8 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+    {{html|safe }}
     <form method="get" action="">
-        <input name="search" type="search">
+        <input name="search" value="{{request.GET.search}}" type="search">
         <button type="submit">Axtar</button>
     </form>
     {% if not book_list %}
@@ -18,7 +19,7 @@
                 id
             </th>
             <th>
-                ad
+                title
             </th>
             <th>
                 price
@@ -29,6 +30,9 @@
              <th>
                 page count
             </th>
+            <th>
+                created_date
+            </th>
         </tr>
         {% for book in book_list %}
 
@@ -37,7 +41,7 @@
                 {{ book.id }}
             </td>
             <td>
-                {{ book.title }}
+                {{ book.title|safe|truncatechars:"6" }}
             </td>
             <td>
                 {{ book.price }}
@@ -48,9 +52,33 @@
              <td>
                 {{ book.page_count }}
             </td>
+            <td>
+                {{ book_created_date|date:"F d, Y" }}
+            </td>
         </tr>
         {% endfor %}
     </table>
     {% endif %}
+
+    <ul style="display: flex; list-style-type: none; width: 100px; justify-content: space-between">
+
+
+        {% if previous_page %}
+            <li><a href="?p=1">&lt&lt</a></li>
+            <li><a href="?p={{previous_page}}">&lt</a></li>
+        {% endif %}
+        {% for page in page_range|slice:"1:3" %}
+            {% if page == current_page %}
+            <li><b>{{page}}</b></li>
+            {% else %}
+            <li><a href="?p={{page}}">{{page}}    </a></li>
+            {% endif %}
+        {% endfor %}
+        {% if next_page %}
+            <li><a href="?p={{next_page}}">&gt</a></li>
+            <li><a href="?p={{page_count}}">&gt&gt</a></li>
+        {% endif %}
+
+    </ul>
 </body>
 </html>

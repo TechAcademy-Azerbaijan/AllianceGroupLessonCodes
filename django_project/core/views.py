@@ -32,5 +32,5 @@ def user_detail(request, user_id):
     context = {
         'select_user': select_user
     }
-    return render(request, 'user_profile.html', context)
+    return render(request, 'user_profile.html',  context)
 
