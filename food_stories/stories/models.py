@@ -10,7 +10,7 @@ class Category(models.Model):
     example: dessert, drinks, salad
     """
     title = models.CharField('Basliq', max_length=40)
-    image = models.ImageField(upload_to='media/category_images/')
+    image = models.ImageField(upload_to='category_images')
 
     # moderation's
     is_published = models.BooleanField(default=False)
@@ -60,7 +60,7 @@ class Story(models.Model):
     # information's
     title = models.CharField(verbose_name='Basliq', max_length=120)
     description = models.TextField('Mezmun', null=True, blank=True)
-    image = models.ImageField('Sekil', upload_to='media/story_images/')
+    image = models.ImageField('Sekil', upload_to='story_images')
 
     # moderation's
     is_published = models.BooleanField('Ders olunsun?', default=False)
@@ -96,7 +96,7 @@ class Recipe(models.Model):
     title = models.CharField(verbose_name='Basliq', max_length=120)
     short_description = models.CharField('Qisa Mezmun', max_length=255)
     description = models.TextField('Mezmun', )
-    image = models.ImageField('Sekil', upload_to='media/story_images/')
+    image = models.ImageField('Sekil', upload_to='story_images')
 
     # moderation's
     is_published = models.BooleanField('Ders olunsun?', default=False)
@@ -157,7 +157,7 @@ class BookCategory(models.Model):
 
 class Author(models.Model):
     full_name = models.CharField('ad soyad', max_length=255)
-    image = models.ImageField('foto', upload_to='media/authors')
+    image = models.ImageField('foto', upload_to='authors')
     nationality = models.CharField('milliyet', max_length=255)
     info = models.TextField('Bio')
 
@@ -168,5 +168,5 @@ class Book(models.Model):
     author = models.ForeignKey(Author, related_name='books', on_delete=models.CASCADE)
     price = models.DecimalField('qiymet', max_digits=4, decimal_places=2)
     page_count = models.IntegerField('sehife sayi')
-    cover_image = models.ImageField('uz qabigi', upload_to='media/book_covers')
+    cover_image = models.ImageField('uz qabigi', upload_to='book_covers')
     categories = models.ManyToManyField(BookCategory, blank=True, related_name='books')

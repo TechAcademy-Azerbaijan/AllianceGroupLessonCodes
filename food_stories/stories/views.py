@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.shortcuts import render
 from django.db.models import Q
-from stories.models import Book
+from stories.models import Book, Category
 
 
 # http://localhost:8000/books/?p=2
@@ -28,7 +28,10 @@ def book_list(request):
     previous_page = page - 1 if page > 1 else None
     next_page = page + 1 if page < page_count else None
     book_created_date = datetime(2021, 10, 12, 12, 00, 00)
-    html = '<h1>Hello World</h1>'
+    html = """
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    """
+    a = 4
     context = {
         'book_list': books,
         'html': html,
@@ -37,6 +40,11 @@ def book_list(request):
         'page_range': range(1, page_count + 1),
         'current_page': page,
         'previous_page': previous_page,
-        'next_page': next_page
+        'next_page': next_page,
+        'a': a,
     }
     return render(request, 'books.html', context)
+
+
+def index(request):
+    return render(request, 'index.html')

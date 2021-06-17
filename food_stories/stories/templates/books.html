@@ -1,11 +1,17 @@
 <!DOCTYPE html>
+{% load custom_tags %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    {{html|safe }}
+    {% with html|split:"," as splited_text  %}
+    {{splited_text}}
+    {{ splited_text.0 }}
+
+    {{ a|add_value:10 }}
+
     <form method="get" action="">
         <input name="search" value="{{request.GET.search}}" type="search">
         <button type="submit">Axtar</button>
@@ -80,5 +86,8 @@
         {% endif %}
 
     </ul>
+    {{ splited_text|slice:"1:" }}
+{% endwith %}
+
 </body>
 </html>
