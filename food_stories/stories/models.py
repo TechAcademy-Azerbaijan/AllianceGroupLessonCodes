@@ -1,3 +1,4 @@
+from django.core.validators import EmailValidator
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -131,6 +132,16 @@ class RecipeComment(models.Model):
 
     def __str__(self):
         return f"{self.id}. user: {self.user.username}"
+
+
+class Contact(models.Model):
+    name = models.CharField('Name', max_length=40)
+    email = models.EmailField(max_length=40,)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 
 class StoryComment(models.Model):

@@ -1,8 +1,11 @@
 import math
 from datetime import datetime
 
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.db.models import Q
+
+from stories.forms import ContactForm
 from stories.models import Book, Category
 
 
@@ -48,3 +51,20 @@ def book_list(request):
 
 def index(request):
     return render(request, 'index.html')
+
+
+def contact(request):
+    form = ContactForm()
+
+    if request.method == 'POST':
+        contact_data = request.POST
+        form = ContactForm(data=contact_data)
+        if form.is_valid():
+            print('data saved')
+            form.save()
+            messages.success(request, 'Muracietiniz qebul olundu')
+            return redirect('/')
+    context = {
+        'form': form
+    }
+    return render(request, 'contact.html', context)

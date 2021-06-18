@@ -20,7 +20,8 @@ from django.conf.urls.static import static
 
 from stories.views import (
     book_list,
-    index
+    index,
+    contact
 )
 
 urlpatterns = [
@@ -28,5 +29,6 @@ urlpatterns = [
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
     path('books/', book_list, ),
-    path('', index, )
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('', index, ),
+    path('contact/', contact, )
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

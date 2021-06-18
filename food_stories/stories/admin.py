@@ -7,7 +7,8 @@ from stories.models import (
     RecipeComment,
     StoryComment,
     Book,
-    Author
+    Author,
+    Contact
 )
 
 
@@ -62,5 +63,6 @@ admin.site.register(Recipe, RecipeAdmin)
 admin.site.register([Category, Story, Tag,
                      StoryComment,
                      Book,
-                     Author
+                     Author,
+                    Contact
                      ])
