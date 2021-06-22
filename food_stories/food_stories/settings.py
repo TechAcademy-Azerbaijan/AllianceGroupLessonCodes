@@ -25,6 +25,8 @@ SECRET_KEY = 'n@wp$9$7#12z=-2xsbsu)f-cu!0=up!+a@!e)*77+93i(bv*cw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+AUTH_USER_MODEL = 'accounts.User'
+
 ALLOWED_HOSTS = []
 
 
@@ -87,6 +89,8 @@ DATABASES = {
         'PORT': 5432
     }
 }
+
+LOGIN_URL = '/login/'
 
 JET_SIDE_MENU_COMPACT = False
 JET_THEMES = [

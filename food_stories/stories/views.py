@@ -2,6 +2,7 @@ import math
 from datetime import datetime
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import Q
 
@@ -53,6 +54,7 @@ def index(request):
     return render(request, 'index.html')
 
 
+@login_required
 def contact(request):
     form = ContactForm()
 

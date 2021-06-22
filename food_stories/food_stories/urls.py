@@ -23,6 +23,10 @@ from stories.views import (
     index,
     contact
 )
+from accounts.views import (
+    register,
+    login
+)
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
@@ -30,5 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', book_list, ),
     path('', index, ),
-    path('contact/', contact, )
+    path('contact/', contact, ),
+    path('register/', register, ),
+    path('login/', login, ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
