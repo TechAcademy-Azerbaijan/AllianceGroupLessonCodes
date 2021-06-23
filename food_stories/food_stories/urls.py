@@ -18,23 +18,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from stories.views import (
-    book_list,
-    index,
-    contact
-)
-from accounts.views import (
-    register,
-    login
-)
-
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
-    path('books/', book_list, ),
-    path('', index, ),
-    path('contact/', contact, ),
-    path('register/', register, ),
-    path('login/', login, ),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('', include('stories.urls', namespace='stories'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
