@@ -5,9 +5,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.views.generic import CreateView, ListView, DetailView
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from stories.forms import ContactForm
-from stories.models import Book, Category
+from stories.models import Book, Category, Contact, Story, Tag
 
 
 # http://localhost:8000/books/?p=2
@@ -54,19 +56,54 @@ def index(request):
     return render(request, 'index.html')
 
 
-@login_required
-def contact(request):
-    form = ContactForm()
+class ContactView(LoginRequiredMixin, CreateView):
+    template_name = 'contact.html'
+    form_class = ContactForm
+    success_url = '/'
 
-    if request.method == 'POST':
-        contact_data = request.POST
-        form = ContactForm(data=contact_data)
-        if form.is_valid():
-            print('data saved')
-            form.save()
-            messages.success(request, 'Muracietiniz qebul olundu')
-            return redirect('/')
-    context = {
-        'form': form
-    }
-    return render(request, 'contact.html', context)
+    # def form_valid(self, form):
+    #     result = super().form_valid(form)
+    #     messages.success(self.request, 'Muracietiniz qebul olundu')
+    #     return result
+
+    # def get_success_url(self):
+    #     messages.success(self.request, 'Muracietiniz qebul olundu')
+    #     return super().get_success_url()
+
+#
+# def story_list(request):
+#     return render(request, 'stories.html', )
+
+
+class StoriesView(ListView):
+    model = Story
+    template_name = 'stories.html'
+    paginate_by = 6
+
+
+class StoryDetailView(DetailView):
+    model = Story
+    template_name = 'story_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_tags'] = Tag.objects.all()
+        return context
+
+
+# @login_required
+# def contact(request):
+#     form = ContactForm()
+#
+#     if request.method == 'POST':
+#         contact_data = request.POST
+#         form = ContactForm(data=contact_data)
+#         if form.is_valid():
+#             print('data saved')
+#             form.save()
+#
+#             return redirect('/')
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'contact.html', context)
