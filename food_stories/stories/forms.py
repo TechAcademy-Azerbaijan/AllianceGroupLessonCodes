@@ -1,6 +1,6 @@
 from django import forms
 
-from stories.models import Contact
+from stories.models import Contact, Story
 
 
 class ContactForm(forms.ModelForm):
@@ -41,6 +41,36 @@ class ContactForm(forms.ModelForm):
             raise forms.ValidationError('Yalniz gmail.com saytindan olan emailler qebul edilir')
         return super().clean()
 
+
+class StoryForm(forms.ModelForm):
+    class Meta:
+        model = Story
+        fields = (
+            'title',
+            'description',
+            'category',
+            'tags',
+            'image'
+        )
+
+        widgets = {
+            'title': forms.TextInput(attrs={
+                               'class': 'form-control',
+                               'placeholder': 'Title'
+                           }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Description'
+            }),
+            'category': forms.Select(attrs={
+                'class': 'form-control',
+                'placeholder': 'Category'
+            }),
+            'tags': forms.SelectMultiple(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tags'
+            }),
+        }
 
 
     # name = forms.CharField(max_length=40, required=True, label='Name',

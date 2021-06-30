@@ -1,6 +1,7 @@
 from django.core.validators import EmailValidator
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse_lazy
 
 User = get_user_model()
 
@@ -75,6 +76,11 @@ class Story(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse_lazy('stories:story_detail', kwargs={
+            'pk': self.pk
+        })
 
 
 class Recipe(models.Model):

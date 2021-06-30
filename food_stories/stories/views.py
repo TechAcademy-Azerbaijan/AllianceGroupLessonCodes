@@ -5,10 +5,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from stories.forms import ContactForm
+from stories.forms import ContactForm, StoryForm
 from stories.models import Book, Category, Contact, Story, Tag
 
 
@@ -60,6 +60,36 @@ class ContactView(LoginRequiredMixin, CreateView):
     template_name = 'contact.html'
     form_class = ContactForm
     success_url = '/'
+
+
+class CreateStoryView(LoginRequiredMixin, CreateView):
+    template_name = 'create_story.html'
+    form_class = StoryForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(CreateStoryView, self).form_valid(form)
+
+
+class UpdateStoryView(LoginRequiredMixin, UpdateView):
+    template_name = 'create_story.html'
+    model = Story
+    form_class = StoryForm
+
+    def get_queryset(self):
+        return super().get_queryset().filter(author=self.request.user)
+
+
+class DeleteStoryView(LoginRequiredMixin, DeleteView):
+    model = Story
+    success_url = '/'
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(author=self.request.user)
+
 
     # def form_valid(self, form):
     #     result = super().form_valid(form)

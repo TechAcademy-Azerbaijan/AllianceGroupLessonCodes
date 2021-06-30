@@ -4,6 +4,7 @@ from accounts.views import (
     logout,
     register,
     activate,
+    UserProfileView
 )
 
 app_name = 'accounts'
@@ -14,4 +15,5 @@ urlpatterns = [
     re_path(r'activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
             activate, name='confirmation'),
     path('register/', register, name='register'),
+    path('user-profile/<int:pk>/', UserProfileView.as_view(), name='user-profile')
 ]

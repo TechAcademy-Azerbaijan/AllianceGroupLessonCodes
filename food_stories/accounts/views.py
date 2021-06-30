@@ -5,12 +5,14 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 
 from django.contrib.auth import get_user_model
+from django.views.generic import ListView, DetailView
 
 from accounts.forms import RegistrationForm, LoginForm
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 
 from accounts.tasks import send_confirmation_mail
 from accounts.utils.tokens import account_activation_token
+from stories.models import Story, Recipe
 
 User = get_user_model()
 
@@ -73,3 +75,28 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, 'your link expired or link invalid')
         return redirect('stories:index')
+
+
+# class UserProfileListView(ListView):
+#     # model = Story
+#     queryset = Story.objects.filter(is_published=True)
+#     template_name = 'user-profile.html'
+#
+#     def get_queryset(self):
+#         queryset = super().get_queryset()
+#         return queryset.filter(author=self.request.user)
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(UserProfileListView, self).get_context_data(**kwargs)
+#         context['recipe_list'] = Recipe.objects.filter(author=self.request.user, is_published=True)
+#         return context
+
+class UserProfileView(DetailView):
+    model = User
+    template_name = 'user-profile.html'
+    context_object_name = 'user_object'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(UserProfileListView, self).get_context_data(**kwargs)
+    #     context['recipe_list'] = Recipe.objects.filter(author=self.request.user, is_published=True)
+    #     return context
