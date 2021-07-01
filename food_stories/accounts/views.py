@@ -5,9 +5,9 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 
 from django.contrib.auth import get_user_model
-from django.views.generic import ListView, DetailView
-
-from accounts.forms import RegistrationForm, LoginForm
+from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView
+from accounts.forms import RegistrationForm, LoginForm, CustomPasswordResetForm, CustomSetPasswordForm
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 
 from accounts.tasks import send_confirmation_mail
@@ -17,43 +17,93 @@ from stories.models import Story, Recipe
 User = get_user_model()
 
 
-def register(request):
-    form = RegistrationForm()
-    if request.POST:
-        form = RegistrationForm(data=request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.set_password(form.cleaned_data.get('password1'))
-            user.save()
-            send_confirmation_mail(user)
-            return redirect(reverse_lazy('accounts:login'))
-    context = {
-        'form': form
-    }
-    return render(request, 'register.html', context)
+class CustomPasswordResetView(PasswordResetView):
+    email_template_name = 'email/password_reset_email.html'
+    form_class = CustomPasswordResetForm
+    template_name = 'forget_password.html'
+    success_url = reverse_lazy('stories:index')
+    
+    def get_success_url(self):
+        messages.success(self.request, 'Password deyismek ile bagli muracietiniz qeyde alindi. '
+                                       'email-inizi yoxlamaginizi teleb olunur.')
+        return super(CustomPasswordResetView, self).get_success_url()
 
 
-def login(request):
-    if request.user.is_authenticated:
-        return redirect('/')
-    form = LoginForm()
-    if request.method == 'POST':
-        form = LoginForm(data=request.POST)
-        if form.is_valid():
-            user = authenticate(username=form.cleaned_data.get('username'),
-                                password=form.cleaned_data.get('password'))
-            if user:
-                django_login(request, user)
-                messages.success(request, 'You are logged in')
-                return redirect('/')
-            else:
-                messages.error(request, 'Invalid credentials')
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'reset_password.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('stories:index')
 
-    context = {
-        'form': form
-    }
-    return render(request, 'login.html', context)
+    def get_success_url(self):
+        messages.success(self.request, 'Sifreniz ugurla deyisdirildi')
+        return super(CustomPasswordResetConfirmView, self).get_success_url()
+
+
+class RegisterView(CreateView):
+    form_class = RegistrationForm
+    template_name = 'register.html'
+    success_url = reverse_lazy('accounts:login')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('/')
+        return super(RegisterView, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.is_active = False
+        result = super().form_valid(form)
+        user = form.instance
+        send_confirmation_mail(user)
+        messages.success(self.request, 'Ugurla qeydiyyatdan kecdiniz, hesabinizi email vasitesi ile tesdiqleyin!')
+        return result
+
+
+# def register(request):
+#     form = RegistrationForm()
+#     if request.POST:
+#         form = RegistrationForm(data=request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.is_active = False
+#             user.set_password(form.cleaned_data.get('password1'))
+#             user.save()
+#             send_confirmation_mail(user)
+#             return redirect(reverse_lazy('accounts:login'))
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'register.html', context)
+
+
+class CustomLoginView(LoginView):
+    form_class = LoginForm
+    template_name = 'login.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('/')
+        return super(CustomLoginView, self).dispatch(request, *args, **kwargs)
+
+# def login(request):
+#     if request.user.is_authenticated:
+#         return redirect('/')
+#     form = LoginForm()
+#     if request.method == 'POST':
+#         form = LoginForm(data=request.POST)
+#         if form.is_valid():
+#             user = authenticate(username=form.cleaned_data.get('username'),
+#                                 password=form.cleaned_data.get('password'))
+#             if user:
+#                 django_login(request, user)
+#                 messages.success(request, 'You are logged in')
+#                 return redirect('/')
+#             else:
+#                 messages.error(request, 'Invalid credentials')
+#
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'login.html', context)
 
 
 def logout(request):

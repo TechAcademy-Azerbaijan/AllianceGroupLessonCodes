@@ -1,19 +1,22 @@
 from django.urls import path, re_path
 from accounts.views import (
-    login,
+    CustomLoginView,
     logout,
-    register,
+    RegisterView,
     activate,
-    UserProfileView
+    UserProfileView, CustomPasswordResetView, CustomPasswordResetConfirmView
 )
 
 app_name = 'accounts'
 
 urlpatterns = [
-    path('login/', login, name='login'),
+    path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', logout, name='logout'),
     re_path(r'activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
             activate, name='confirmation'),
-    path('register/', register, name='register'),
+    re_path(r'reset-password/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+            CustomPasswordResetConfirmView.as_view(), name='reset-password'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('forget-password/', CustomPasswordResetView.as_view(), name='password-reset-view'),
     path('user-profile/<int:pk>/', UserProfileView.as_view(), name='user-profile')
 ]

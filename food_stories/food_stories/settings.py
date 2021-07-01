@@ -89,6 +89,7 @@ DATABASES = {
 }
 
 LOGIN_URL = reverse_lazy('accounts:login')
+LOGIN_REDIRECT_URL = reverse_lazy('stories:index')
 
 JET_SIDE_MENU_COMPACT = False
 JET_THEMES = [
