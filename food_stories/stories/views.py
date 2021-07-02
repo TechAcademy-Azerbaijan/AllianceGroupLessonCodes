@@ -113,6 +113,7 @@ class StoriesView(ListView):
 
 class StoryDetailView(DetailView):
     model = Story
+    # queryset =
     template_name = 'story_detail.html'
     
     def get_context_data(self, **kwargs):

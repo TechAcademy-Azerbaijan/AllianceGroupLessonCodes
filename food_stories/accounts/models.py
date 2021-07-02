@@ -10,6 +10,6 @@ class User(AbstractUser):
         (True, 'Men'),
         (False, 'Woman'),
     )
-    image = models.ImageField('Image', upload_to='profile_pictures', null=True, blank=True)
+    image = models.ImageField('Image', upload_to='profile_pictures', max_length=500, null=True, blank=True)
     bio = models.TextField('Bio', null=True, blank=True)
     gender = models.BooleanField('Gender', choices=GENDER_CHOICES, default=False)

@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'social_django',
+
     'stories',
     'accounts'
 ]
@@ -52,6 +55,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = 'food_stories.urls'
@@ -90,6 +99,35 @@ DATABASES = {
 
 LOGIN_URL = reverse_lazy('accounts:login')
 LOGIN_REDIRECT_URL = reverse_lazy('stories:index')
+LOGOUT_URL = reverse_lazy('accounts:logout')
+LOGOUT_REDIRECT_URL = reverse_lazy('accounts:login')
+
+SOCIAL_AUTH_FACEBOOK_KEY = '811736076181011'        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '39ef938c42a093c9a384702caf031a4c'  # App Secret
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '360419868722-ansh8rd0cu1itdfo1rpp0pr5q9uiuasj.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'FEvUhyRsHDUJXYgwV3L_7iiI'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_friends',]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id,name,email,picture',
+}
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'stories.users.pipeline.update_user_social_data', # This is the path of your pipeline.py
+)
+
 
 JET_SIDE_MENU_COMPACT = False
 JET_THEMES = [
