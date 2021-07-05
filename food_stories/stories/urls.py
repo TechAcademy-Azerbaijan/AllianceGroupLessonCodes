@@ -17,5 +17,5 @@ urlpatterns = [
     path('create-story/', CreateStoryView.as_view(), name='create-story'),
     path('update-story/<int:pk>/', UpdateStoryView.as_view(), name='update-story'),
     path('delete-story/<int:pk>/', DeleteStoryView.as_view(), name='delete-story'),
-    path('stories/<int:pk>/', StoryDetailView.as_view(), name='story_detail'),
+    path('stories/<slug:slug>/', StoryDetailView.as_view(), name='story_detail'),
 ]

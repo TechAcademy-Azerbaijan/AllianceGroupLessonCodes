@@ -24,13 +24,13 @@
                     {% for story in story_list %}
                         <div class="col-md-4 ftco-animate">
                         <div class="blog-entry">
-                            <a href="{%  url 'stories:story_detail' story.id %}" class="img-2"><img src="{{story.image.url}}" class="img-fluid"
+                            <a href="{{ story.get_absolute_url }}" class="img-2"><img src="{{story.image.url}}" class="img-fluid"
                                                                            alt="{{ story.title }}"></a>
                             <div class="text pt-3">
                                 <p class="meta d-flex"><span class="pr-3">{{ story.category.title }}</span><span class="ml-auto pl-3">{{ story.created_at }}</span>
                                 </p>
-                                <h3><a href="{% url 'stories:story_detail' story.id %}">{{ story.title }}</a></h3>
-                                <p class="mb-0"><a href="{% url 'stories:story_detail' story.id %}" class="btn btn-black py-2">Read More <span
+                                <h3><a href="{{ story.get_absolute_url }}">{{ story.title }}</a></h3>
+                                <p class="mb-0"><a href="{{ story.get_absolute_url }}" class="btn btn-black py-2">Read More <span
                                         class="icon-arrow_forward ml-4"></span></a></p>
                             </div>
                         </div>

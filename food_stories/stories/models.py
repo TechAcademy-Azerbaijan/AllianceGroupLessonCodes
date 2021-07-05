@@ -61,6 +61,7 @@ class Story(models.Model):
 
     # information's
     title = models.CharField(verbose_name='Basliq', max_length=120)
+    slug = models.CharField(verbose_name='Slug', max_length=140)
     description = models.TextField('Mezmun', null=True, blank=True)
     image = models.ImageField('Sekil', upload_to='story_images')
 
@@ -79,7 +80,7 @@ class Story(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('stories:story_detail', kwargs={
-            'pk': self.pk
+            'slug': self.slug
         })
 
 
@@ -101,6 +102,7 @@ class Recipe(models.Model):
 
     # information's
     title = models.CharField(verbose_name='Basliq', max_length=120)
+    slug = models.CharField(verbose_name='Slug', max_length=140)
     short_description = models.CharField('Qisa Mezmun', max_length=255)
     description = models.TextField('Mezmun', )
     image = models.ImageField('Sekil', upload_to='story_images')
@@ -117,6 +119,16 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+    # def save(self, **kwargs):
+    #     self.slug = self.title
+    #     return super(Recipe, self).save(**kwargs)
+        # story.slug = story.title
+        # story.save()
+
+
+# obj = Story(title='')
+# obj.save()
 
 
 class RecipeComment(models.Model):

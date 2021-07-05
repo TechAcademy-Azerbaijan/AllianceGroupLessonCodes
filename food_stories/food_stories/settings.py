@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 
     'social_django',
 
-    'stories',
+    'stories.apps.StoriesConfig',
     'accounts'
 ]
 
