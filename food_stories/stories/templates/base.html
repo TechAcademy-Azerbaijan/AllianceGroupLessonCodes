@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static custom_tags %}
+{% load static custom_tags i18n %}
 <html lang="en">
 
 <head>
@@ -38,12 +38,33 @@
 
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="stories.html" class="nav-link">Stories</a></li>
-                    <li class="nav-item"><a href="recipes.html" class="nav-link">Recipes</a></li>
-                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                    {{user.username}}
+                    <li class="nav-item active"><a href="index.html" class="nav-link">{% trans 'Home' %}</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">{% trans 'About' %}</a></li>
+                    <li class="nav-item"><a href="stories.html" class="nav-link">{% trans 'Stories'%}</a></li>
+                    <li class="nav-item"><a href="recipes.html" class="nav-link">{% trans 'Recipes' %}</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">{% trans 'Contact' %}</a></li>
+                    <li class="nav-item">
+                        <form action="{% url 'set_language' %}" method="post">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}" />
+    <ul class="nav navbar-nav navbar-right language menu">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+            <li>
+                <button type="submit"
+                        name="language"
+                        value="{{ language.code }}"
+                        class="{% if language.code == LANGUAGE_CODE %}alert-warning{% endif %}">
+                    {{ language.code }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+</form>
+                    </li>
+
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'accounts:logout' %}" class="btn btn-black px-3 px-md-4 py-3">Logout</a></li>
                     {% else %}

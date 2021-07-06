@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 from django.template.defaultfilters import slugify
-from django.db.models import F
 
 from stories.models import Story, Recipe
 

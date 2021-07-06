@@ -1,4 +1,5 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 from stories.models import (
     Category,
     Story,
@@ -54,13 +55,21 @@ class RecipeCommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'content', 'recipe', 'parent_comment', 'created_at', 'is_published')
 
 
+class StoryAdmin(TranslationAdmin):
+    pass
+
+
+admin.site.register(Story, StoryAdmin)
+
 from django.utils.html import format_html
 
 logo_url= "https://static.wixstatic.com/media/50b774_7148e9bb84e04e4fb77a11ca94709cac~mv2.jpg/v1/fit/w_2500,h_1330,al_c/50b774_7148e9bb84e04e4fb77a11ca94709cac~mv2.jpg"
 admin.site.site_header = format_html("`<img src={url} height=100 width=100`>", url=logo_url)
 
+
+
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register([Category, Story, Tag,
+admin.site.register([Category, Tag,
                      StoryComment,
                      Book,
                      Author,

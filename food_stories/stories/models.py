@@ -2,6 +2,7 @@ from django.core.validators import EmailValidator
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
@@ -20,8 +21,8 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
 
     def __str__(self):
         return self.title
@@ -60,8 +61,8 @@ class Story(models.Model):
     tags = models.ManyToManyField(Tag, related_name='stories', db_index=True)
 
     # information's
-    title = models.CharField(verbose_name='Basliq', max_length=120)
-    slug = models.CharField(verbose_name='Slug', max_length=140)
+    title = models.CharField(verbose_name=_('Title'), max_length=120)
+    slug = models.CharField(verbose_name='Slug', editable=False, max_length=140)
     description = models.TextField('Mezmun', null=True, blank=True)
     image = models.ImageField('Sekil', upload_to='story_images')
 
