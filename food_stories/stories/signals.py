@@ -10,6 +10,7 @@ def story_set_slug(sender, instance, created, *args, **kwargs):
     if created:
         instance.slug_az = f"{slugify(instance.title_az)}-{instance.id}"
         instance.slug_en = f"{slugify(instance.title_en)}-{instance.id}"
+        instance.slug = f"{slugify(instance.title)}-{instance.id}"
         instance.slug_ru = f"{slugify(instance.title_ru)}-{instance.id}"
         instance.save()
 

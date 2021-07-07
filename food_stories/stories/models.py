@@ -27,6 +27,12 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+    # def serialize(self):
+    #     return {
+    #         'title': self.title,
+    #         'image': self.image.url
+    #     }
+
 
 class Tag(models.Model):
     """
@@ -83,6 +89,13 @@ class Story(models.Model):
         return reverse_lazy('stories:story_detail', kwargs={
             'slug': self.slug
         })
+
+    # def serialize(self):
+    #     return {
+    #         'title': self.title,
+    #         'description': self.description,
+    #         'category': self.category.serialize()
+    #     }
 
 
 class Recipe(models.Model):

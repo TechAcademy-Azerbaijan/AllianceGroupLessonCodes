@@ -27,8 +27,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('api/', include('stories.api.urls', namespace='stories_api')),
 
     path('social-auth/', include('social_django.urls', namespace="social")),
+    # path('api-auth/', include('rest_framework.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(
