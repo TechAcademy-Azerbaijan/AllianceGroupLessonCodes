@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'social_django',
     'rest_framework',
+    'rest_framework.authtoken',
 
     'stories.apps.StoriesConfig',
     'accounts'
@@ -65,6 +66,14 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 ROOT_URLCONF = 'food_stories.urls'
 

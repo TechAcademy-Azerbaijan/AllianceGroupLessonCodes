@@ -20,6 +20,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from accounts.api.views import CustomAuthToken
+
 urlpatterns = [
 
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
@@ -30,7 +32,7 @@ urlpatterns = [
     path('api/', include('stories.api.urls', namespace='stories_api')),
 
     path('social-auth/', include('social_django.urls', namespace="social")),
-    # path('api-auth/', include('rest_framework.urls'))
+    path('api-token-auth/', CustomAuthToken.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(

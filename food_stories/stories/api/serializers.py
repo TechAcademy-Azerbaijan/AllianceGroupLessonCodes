@@ -43,6 +43,12 @@ class StorySerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at'
         )
+        read_only_fields = ('author',)
+
+    def validate(self, attrs):
+        request = self.context.get('request')
+        attrs['author'] = request.user
+        return super(StorySerializer, self).validate(attrs)
 
 
 class StoryListSerializer(StorySerializer):
