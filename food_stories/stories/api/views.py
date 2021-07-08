@@ -41,3 +41,12 @@ class StoryAPIView(APIView):
         serializer = StoryListSerializer(story, context={'request': self.request})
         return JsonResponse(data=serializer.data, safe=False)
 
+    def put(self, *args, **kwargs):
+        story = Story.objects.filter(slug=kwargs.get('slug')).first()
+        if not story:
+            raise Http404
+        serializer = StorySerializer(data=self.request.data,
+                                     instance=story, context={'request': self.request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return JsonResponse(data=serializer.data, safe=False, status=201)
