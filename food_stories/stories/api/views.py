@@ -1,9 +1,9 @@
 from django.http import JsonResponse, Http404
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from stories.api.serializers import StorySerializer, StoryListSerializer
-from stories.models import Story
-from rest_framework.generics import ListCreateAPIView
+from stories.api.serializers import StorySerializer, StoryListSerializer, SubscriberSerializer
+from stories.models import Story, Subscriber
+from rest_framework.generics import ListCreateAPIView, CreateAPIView
 
 
 # class StoriesAPIView(APIView):
@@ -50,3 +50,8 @@ class StoryAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return JsonResponse(data=serializer.data, safe=False, status=201)
+
+
+class SubscribeAPIView(CreateAPIView):
+    serializer_class = SubscriberSerializer
+    model = Subscriber

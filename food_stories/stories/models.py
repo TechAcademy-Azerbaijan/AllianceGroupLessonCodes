@@ -194,6 +194,16 @@ class StoryComment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class Subscriber(models.Model):
+    email = models.EmailField(max_length=40)
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True, )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.email
+
 class BookCategory(models.Model):
     title = models.CharField(max_length=255)
 

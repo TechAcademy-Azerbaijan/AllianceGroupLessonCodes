@@ -9,7 +9,7 @@ from stories.models import (
     StoryComment,
     Book,
     Author,
-    Contact
+    Contact, Subscriber
 )
 
 
@@ -73,5 +73,6 @@ admin.site.register([Category, Tag,
                      StoryComment,
                      Book,
                      Author,
+                    Subscriber,
                     Contact
                      ])
