@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
@@ -13,6 +14,9 @@ from stories.models import Book, Category, Contact, Story, Tag
 
 
 # http://localhost:8000/books/?p=2
+# from stories.tasks import dump
+
+
 def book_list(request):
     search = request.GET.get('search', '')
     page = int(request.GET.get('p', 1))
@@ -138,3 +142,11 @@ class StoryDetailView(DetailView):
 #         'form': form
 #     }
 #     return render(request, 'contact.html', context)
+
+
+# def dump_database(request):
+#     dump.delay()
+#     return HttpResponse("Database dump olundu")
+
+
+# dump_database()

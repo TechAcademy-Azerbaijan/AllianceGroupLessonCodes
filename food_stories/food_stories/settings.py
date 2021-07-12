@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_celery_beat',
 
     'stories.apps.StoriesConfig',
     'accounts'
@@ -99,6 +100,15 @@ TEMPLATES = [
         },
     },
 ]
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Baku'
+
+SITE_ADDRESS = 'http://localhost:8000'
 
 WSGI_APPLICATION = 'food_stories.wsgi.application'
 

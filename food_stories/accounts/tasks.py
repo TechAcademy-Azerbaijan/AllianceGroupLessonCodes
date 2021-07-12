@@ -1,3 +1,4 @@
+from celery import shared_task
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
@@ -12,6 +13,7 @@ from accounts.utils.tokens import account_activation_token
 # http://localhost:8000/accounts/confirmation/MTA/5rq-0706b66e9541aedfad99/
 
 
+@shared_task
 def send_confirmation_mail(user):
     token = account_activation_token.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))

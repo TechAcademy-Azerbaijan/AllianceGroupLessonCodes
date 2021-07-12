@@ -6,3 +6,4 @@ class StoriesConfig(AppConfig):
 
     def ready(self):
         import stories.signals
+        import stories.tasks
