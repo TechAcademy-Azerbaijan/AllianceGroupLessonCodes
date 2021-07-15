@@ -12,3 +12,8 @@ def posts():
             return jsonify(new_post), 201
     post_list = get_posts()
     return jsonify(post_list), 200
+
+
+@app.route('/events', methods=['POST'])
+def events():
+    return jsonify({'message': 'success'}), 200

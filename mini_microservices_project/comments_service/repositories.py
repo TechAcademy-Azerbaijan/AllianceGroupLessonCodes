@@ -1,3 +1,4 @@
+import requests
 comment_list = [
     {
         'comment_id': 1,
@@ -32,4 +33,9 @@ def create_comment(post_id, content):
         'post_id': post_id
     }
     comment_list.append(new_comment)
+    event = {
+        'event_type': 'COMMENT_CREATED',
+        'data': new_comment
+    }
+    requests.post('http://localhost:5004/events', json=event)
     return new_comment

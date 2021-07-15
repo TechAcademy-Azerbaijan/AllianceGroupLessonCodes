@@ -11,3 +11,8 @@ def comments(post_id):
         return jsonify(new_comment), 201
     comment_list = get_comments(post_id)
     return jsonify(comment_list), 200
+
+
+@app.route('/events', methods=['POST'])
+def events():
+    return jsonify({'message': 'success'}), 200
