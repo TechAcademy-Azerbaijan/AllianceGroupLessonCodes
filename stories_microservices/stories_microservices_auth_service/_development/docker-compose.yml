@@ -1,0 +1,14 @@
+version: '3'
+services:
+
+  post_db:
+    container_name:  postgres-db
+    image:           postgres
+    ports:
+      - 5433:5432 # Bind host port 5433 to PostgreSQL port 5432
+    restart: always
+    volumes:
+      - ../db-data:/var/lib/postgresql/data
+    env_file: ../.env
+    environment:
+      - LC_ALL=C.UTF-8
