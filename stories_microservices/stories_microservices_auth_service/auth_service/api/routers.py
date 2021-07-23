@@ -47,3 +47,12 @@ def protected():
     user = User.query.filter_by(id=current_user_id).first()
     return UserSchema().jsonify(user), 200
 
+
+# We are using the `refresh=True` options in jwt_required to only allow
+# refresh tokens to access this route.
+@app.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+def refresh():
+    identity = get_jwt_identity()
+    access_token = create_access_token(identity=identity)
+    return jsonify(access_token=access_token)
