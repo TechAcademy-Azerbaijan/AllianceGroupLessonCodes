@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -60,10 +61,10 @@ def index(request):
     return render(request, 'index.html')
 
 
-class ContactView(LoginRequiredMixin, CreateView):
+class ContactView(CreateView):
     template_name = 'contact.html'
     form_class = ContactForm
-    success_url = '/'
+    success_url = reverse_lazy('stories:index')
 
 
 class CreateStoryView(LoginRequiredMixin, CreateView):

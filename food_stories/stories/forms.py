@@ -36,8 +36,8 @@ class ContactForm(forms.ModelForm):
     # def clean_email(self):
 
     def clean(self):
-        email = self.cleaned_data['email']
-        if not email.endswith('gmail.com'):
+        email = self.cleaned_data.get('email')
+        if email and not email.endswith('gmail.com'):
             raise forms.ValidationError('Yalniz gmail.com saytindan olan emailler qebul edilir')
         return super().clean()
 
