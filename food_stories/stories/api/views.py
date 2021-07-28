@@ -1,5 +1,5 @@
 from django.http import JsonResponse, Http404
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from stories.api.serializers import StorySerializer, StoryListSerializer, SubscriberSerializer
 from stories.models import Story, Subscriber
@@ -32,14 +32,25 @@ class StoriesAPIView(ListCreateAPIView):
             return StorySerializer
         return super(StoriesAPIView, self).get_serializer_class()
 
+from rest_framework.parsers import FormParser
 
-class StoryAPIView(APIView):
+class StoryAPIView(GenericAPIView):
+    serializer_class = StorySerializer
+    parser_classes = (FormParser,)
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return StoryListSerializer
+        return super().get_serializer_class()
+
+
     def get(self, *args, **kwargs):
         story = Story.objects.filter(slug=kwargs.get('slug')).first()
         if not story:
             raise Http404
         serializer = StoryListSerializer(story, context={'request': self.request})
         return JsonResponse(data=serializer.data, safe=False)
+
 
     def put(self, *args, **kwargs):
         story = Story.objects.filter(slug=kwargs.get('slug')).first()

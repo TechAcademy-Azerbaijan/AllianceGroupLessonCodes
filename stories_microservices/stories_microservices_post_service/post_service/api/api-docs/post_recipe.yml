@@ -1,0 +1,66 @@
+
+tags:
+- "recipes"
+summary: "Get All Recipe Endpoint"
+description: "skjdfjksbndfl"
+consumes:
+- "application/json"
+- "application/xml"
+produces:
+- "application/json"
+- "application/xml"
+
+parameters:
+  - name: Token
+    in: header
+    type: string
+  - name: data
+    in: body
+    schema:
+      $ref: '#/definitions/Recipe'
+
+responses:
+    201:
+        description: "Create Recipe"
+        schema:
+            $ref: "#/definitions/Recipe"
+        
+    "404":
+        description: "page not found"
+
+definitions:
+  Recipe:
+    type: "object"
+    required:
+    - "category"
+    - "title"
+    - "description"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      category:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+      created_at:
+        type: "string"
+        format: "date-time"
+      updated_at:
+        type: "string"
+        format: "date-time"
+      description:
+        type: "string"
+      image:
+        type: "string"
+        format: "binary"
+      is_published:
+        type: "boolean"
+      short_description: 
+        type: "string"
+      slug: 
+        type: "string"
+      owner_id:
+        type: "integer"
+  

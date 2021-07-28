@@ -7,6 +7,7 @@ from marshmallow import ValidationError
 from ..app import app
 from ..models import User
 from ..schemas.schema import UserSchema, LoginSchema
+from ..utils.tokens import confirm_token
 
 
 @app.route('/register/', methods=['POST'])
@@ -14,7 +15,9 @@ def register():
     user_data = dict(request.json or request.form)
     try:
         user = UserSchema().load(user_data)
+        user.is_active = False
         user.save()
+        user.send_confirmation_mail()
         return UserSchema().jsonify(user), HTTPStatus.CREATED
     except ValidationError as err:
         return jsonify(err.messages), HTTPStatus.BAD_REQUEST
@@ -35,6 +38,20 @@ def login():
             return jsonify({'message': 'Invalid credentials'}), HTTPStatus.UNAUTHORIZED
     except ValidationError as err:
         return jsonify(err.messages), HTTPStatus.BAD_REQUEST
+
+
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    email = confirm_token(token)
+    if not email:
+        return jsonify({'message': 'The confirmation link is invalid or has expired.'})
+    user = User.query.filter_by(email=email).first_or_404()
+    if user.is_active:
+        return jsonify({'message': 'Account already confirmed. Please login.'})
+    else:
+        user.is_active = True
+        user.save()
+    return jsonify({'message': 'You have confirmed your account. Thanks!'})
 
 
 # Protect a route with jwt_required, which will kick out requests

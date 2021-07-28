@@ -1,7 +1,10 @@
+from flask import render_template, url_for
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 from sqlalchemy.sql import func
 from .config.extentions import db, login_manager
+from .publisher import Publish
+from .utils.tokens import generate_confirmation_token
 
 
 @login_manager.user_loader
@@ -46,3 +49,15 @@ class User(UserMixin, SaveMixin, db.Model):
     def __init__(self, *args, **kwargs):
         kwargs['password'] = generate_password_hash(kwargs['password'])
         super(User, self).__init__(*args, **kwargs)
+
+    def send_confirmation_mail(self):
+        token = generate_confirmation_token(self.email)
+        confirm_url = url_for('confirm_email', token=token, _external=True)
+        html = render_template('confirmation_email.html', confirm_url=confirm_url)
+        subject = "Please confirm your email"
+        Publish(event_type='send_mail', data={
+            'body': html,
+            'subject': subject,
+            'recipients': [self.email]
+        })
+

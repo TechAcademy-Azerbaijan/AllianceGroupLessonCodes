@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+import redis
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -9,6 +10,19 @@ from ..app import app
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://auth_user:12345@localhost:5433/auth_db_name"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+app.config["SECRET_KEY"] = '12345'
+app.config["SECURITY_PASSWORD_SALT"] = '12345'
+
+
+class RedisConf:
+    HOST = 'localhost'
+    PORT = 6379
+    CHANNEL_NAME = 'events'
+    PASSWORD = '12345'
+
+    @property
+    def client(self):
+        return redis.Redis(host=self.HOST, port=self.PORT, password=self.PASSWORD, db=0)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

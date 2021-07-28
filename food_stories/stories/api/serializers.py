@@ -36,12 +36,10 @@ class StorySerializer(serializers.ModelSerializer):
             'category',
             'author',
             'tags',
-            'title',
-            'slug',
-            'description',
+            # 'slug',
             'image',
-            'created_at',
-            'updated_at'
+            # 'created_at',
+            # 'updated_at'
         )
         read_only_fields = ('author',)
 
@@ -51,9 +49,25 @@ class StorySerializer(serializers.ModelSerializer):
         return super(StorySerializer, self).validate(attrs)
 
 
-class StoryListSerializer(StorySerializer):
+class StoryListSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     tags = TagSerializer(many=True)
+
+    class Meta:
+        model = Story
+        fields = (
+            'id',
+            'title',
+            'description',
+            'category',
+            'author',
+            'tags',
+            # 'slug',
+            # 'image',
+            # 'created_at',
+            # 'updated_at'
+        )
+        read_only_fields = ('author',)
 
 
 class SubscriberSerializer(serializers.ModelSerializer):
