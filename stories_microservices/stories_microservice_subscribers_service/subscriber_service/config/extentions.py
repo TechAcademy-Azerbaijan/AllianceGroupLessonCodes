@@ -7,8 +7,9 @@ from flask_marshmallow import Marshmallow
 from flasgger import Swagger
 from ..app import app
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://post_user:12345@localhost:5432/post_db_names"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://db_user:12345@localhost:5434/db_name"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+app.config['CELERY_BROKER_URL'] = "redis://:12345@localhost:6379/0"
 
 
 class RedisConfig:

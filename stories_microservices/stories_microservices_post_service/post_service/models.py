@@ -1,7 +1,10 @@
 from flask_login import UserMixin
 from slugify import slugify
 from sqlalchemy.sql import func
+
+from .cache import Cache
 from .config.extentions import db, login_manager
+
 
 
 @login_manager.user_loader
@@ -94,4 +97,10 @@ class Recipe(SaveMixin, db.Model):
         self.slug = slugify(title)
         kwargs['title'] = title
         super(Recipe, self).__init__(*args, **kwargs)
+
+    def save(self):
+        from .schemas.schema import RecipeSchema
+        super(Recipe, self).save()
+        data = RecipeSchema().dumps(self)
+        Cache().write(data)
 
