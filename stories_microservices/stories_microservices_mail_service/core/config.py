@@ -18,4 +18,4 @@ class EmailConfig:
     EMAIL_USE_TLS = True
     EMAIL_PORT = 587
     EMAIL_HOST_USER = 'idris.sabanli@gmail.com'
-    EMAIL_HOST_PASSWORD = 'eilspkdoglouissm'
+    EMAIL_HOST_PASSWORD = 'tmuoqqazogwupsna'
