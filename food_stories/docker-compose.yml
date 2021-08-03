@@ -6,6 +6,8 @@ services:
     image: jwilder/nginx-proxy
     ports:
       - "80:80"
+    depends_on:
+      - "web"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/vhost/:/etc/nginx/vhost.d:ro
@@ -25,7 +27,7 @@ services:
   web:
     build: .
     restart: always
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn --bind 0.0.0.0 -p 8000 food_stories.wsgi
     ports:
       - "8000:8000"
     volumes:
