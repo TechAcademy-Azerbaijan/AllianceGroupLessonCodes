@@ -2,18 +2,27 @@
 version: '3.1'
 
 services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy
+#  nginx-proxy:
+#    image: jwilder/nginx-proxy
+#    ports:
+#      - "80:80"
+#    depends_on:
+#      - "web"
+#    volumes:
+#      - /var/run/docker.sock:/tmp/docker.sock:ro
+#      - ./nginx/vhost/:/etc/nginx/vhost.d:ro
+#      - ./nginx/conf.d/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf:ro
+#      - ./static/:/code/static/
+#      - ./media/:/code/media/
+
+  nginx:
+    build: ./nginx
     ports:
-      - "80:80"
+      - 80:80
     depends_on:
-      - "web"
+      - web
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./nginx/vhost/:/etc/nginx/vhost.d:ro
-      - ./nginx/conf.d/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf:ro
       - ./static/:/code/static/
-      - ./media/:/code/media/
 
   db:
     image: postgres
@@ -27,14 +36,18 @@ services:
   web:
     build: .
     restart: always
-    command: gunicorn --bind 0.0.0.0 -p 8000 food_stories.wsgi
     ports:
       - "8000:8000"
     volumes:
       - .:/code
+      - ./static/:/code/static/
     depends_on:
       - "db"
     env_file: ./.env
+    environment:
+      - VIRTUAL_HOST=localhost,35.226.246.115
+      - VIRTUAL_PORT=8000
+      - HTTP_PORT=8000
 
   redis:
     image: redis
