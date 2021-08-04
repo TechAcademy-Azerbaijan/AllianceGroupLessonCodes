@@ -3,12 +3,12 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from flasgger import swag_from
 
-from ..app import app
+from ..api import api
 from ..models import Recipe
 from ..schemas.schema import RecipeSchema
 
 
-@app.route('/recipes/', methods=['GET', 'POST'])
+@api.route('/recipes', methods=['GET', 'POST'])
 @swag_from('api-docs/recipes.yml', methods=['GET',])
 @swag_from('api-docs/post_recipe.yml', methods=['POST',])
 def recipes():

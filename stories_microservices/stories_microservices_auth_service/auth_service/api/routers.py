@@ -4,13 +4,13 @@ from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 
-from ..app import app
+from ..api import api
 from ..models import User
 from ..schemas.schema import UserSchema, LoginSchema
 from ..utils.tokens import confirm_token
 
 
-@app.route('/register/', methods=['POST'])
+@api.route('/register', methods=['POST'])
 def register():
     user_data = dict(request.json or request.form)
     try:
@@ -23,7 +23,7 @@ def register():
         return jsonify(err.messages), HTTPStatus.BAD_REQUEST
 
 
-@app.route("/login", methods=["POST"])
+@api.route("/login", methods=["POST"])
 def login():
     user_login_info = dict(request.json or request.form)
     try:
@@ -40,7 +40,7 @@ def login():
         return jsonify(err.messages), HTTPStatus.BAD_REQUEST
 
 
-@app.route('/confirm/<token>')
+@api.route('/confirm/<token>')
 def confirm_email(token):
     email = confirm_token(token)
     if not email:
@@ -56,7 +56,7 @@ def confirm_email(token):
 
 # Protect a route with jwt_required, which will kick out requests
 # without a valid JWT present.
-@app.route("/protected", methods=["GET"])
+@api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
     # Access the identity of the current user with get_jwt_identity
@@ -67,7 +67,7 @@ def protected():
 
 # We are using the `refresh=True` options in jwt_required to only allow
 # refresh tokens to access this route.
-@app.route("/refresh", methods=["POST"])
+@api.route("/refresh", methods=["POST"])
 @jwt_required(refresh=True)
 def refresh():
     identity = get_jwt_identity()

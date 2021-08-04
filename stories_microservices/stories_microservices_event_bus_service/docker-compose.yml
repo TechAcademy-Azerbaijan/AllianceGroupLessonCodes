@@ -11,3 +11,8 @@ services:
      volumes:
        - ./redisdb:/var/lib/redis
 #     env_file: .env
+
+networks:
+  default:
+    external:
+      name: redis

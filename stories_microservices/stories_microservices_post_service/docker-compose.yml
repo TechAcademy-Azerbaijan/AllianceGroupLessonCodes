@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  post_db:
+    container_name:  post_db
+    image:           postgres
+    ports:
+      - 5432:5432 # Bind host port 5432 to PostgreSQL port 5432
+    restart: always
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    env_file: ./.env
+    environment:
+      - LC_ALL=C.UTF-8
+
+  web:
+    build: .
+    ports:
+      - 8002:5000
+    command: flask run -h 0.0.0.0 -p 5000
+    volumes:
+      - .:/code
+    env_file: ./.env
+    depends_on:
+      - "post_db"
+
+networks:
+  default:
+    external:
+      name: redis

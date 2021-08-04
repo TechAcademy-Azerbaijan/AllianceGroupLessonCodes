@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  nginx-reverse-proxy:
+    container_name: nginx
+    build: .
+    ports:
+      - 80:80
+    restart: always

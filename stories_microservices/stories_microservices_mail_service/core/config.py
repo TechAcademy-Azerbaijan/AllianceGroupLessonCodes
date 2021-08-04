@@ -3,14 +3,14 @@ import redis
 
 
 class RedisConfig:
-    HOST = os.environ.get('REDIS_HOST', 'localhost')
-    PORT = os.environ.get('REDIS_PORT', 6379)
+    REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+    REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
     CHANNEL_NAME = 'events'
-    PASSWORD = os.environ.get('REDIS_PASSWORD', '12345')
+    REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', '12345')
 
     @classmethod
     def client(cls):
-        return redis.Redis(host=cls.HOST, port=cls.PORT, password=cls.PASSWORD, db=0)
+        return redis.Redis(host=cls.REDIS_HOST, port=cls.REDIS_PORT, password=cls.REDIS_PASSWORD, db=0)
 
 
 class EmailConfig:
