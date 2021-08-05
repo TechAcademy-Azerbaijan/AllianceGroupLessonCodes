@@ -55,6 +55,7 @@ class User(UserMixin, SaveMixin, db.Model):
         confirm_url = url_for('api.confirm_email', token=token, _external=True)
         html = render_template('confirmation_email.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
+
         Publish(event_type='send_mail', data={
             'body': html,
             'subject': subject,

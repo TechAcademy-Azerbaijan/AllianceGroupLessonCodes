@@ -9,7 +9,10 @@ class Publish(RedisConf):
             'event_type': event_type,
             'data': data
         }
-        self.publish()
+        try:
+            self.publish()
+        except:
+            pass
 
     def stringify(self):
         return json.dumps(self.sent_data)
